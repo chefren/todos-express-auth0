@@ -44,7 +44,8 @@ router.post('/logout', function(req, res, next) {
     if (err) { return next(err); }
     var params = {
       client_id: process.env['AUTH0_CLIENT_ID'],
-      returnTo: 'http://localhost:3000/'
+      port: process.env['PORT'],
+      returnTo: 'http://localhost:' + port + '/'
     };
     res.redirect('https://' + process.env['AUTH0_DOMAIN'] + '/v2/logout?' + qs.stringify(params));
   });
