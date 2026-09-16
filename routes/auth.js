@@ -11,6 +11,7 @@ passport.use(new OpenIDConnectStrategy({
   userInfoURL: 'https://' + process.env['AUTH0_DOMAIN'] + '/userinfo',
   clientID: process.env['AUTH0_CLIENT_ID'],
   clientSecret: process.env['AUTH0_CLIENT_SECRET'],
+  port: process.env['PORT'],
   callbackURL: '/oauth2/redirect',
   scope: [ 'profile' ]
 }, function verify(issuer, profile, cb) {
@@ -42,9 +43,9 @@ router.get('/oauth2/redirect', passport.authenticate('openidconnect', {
 router.post('/logout', function(req, res, next) {
   req.logout(function(err) {
     if (err) { return next(err); }
+    var port = process.env['PORT'];
     var params = {
       client_id: process.env['AUTH0_CLIENT_ID'],
-      port: process.env['PORT'],
       returnTo: 'http://localhost:' + port + '/'
     };
     res.redirect('https://' + process.env['AUTH0_DOMAIN'] + '/v2/logout?' + qs.stringify(params));
